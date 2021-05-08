@@ -6,6 +6,8 @@ India has been facing multiple challanges amid second wave of COVID-19. This pro
 If you are from India and struggling to find a vaccination slot, worry not and use this project to your benefit. WhatsApp is in our daily life. So why not use it for our benefit in finding a vaccination slot? Follow along and setup a WhatsApp notification service to get notified on the vaccination slot availability in your area at the earliest.
 </br></br>
 
+![](./screenshots/banner.png)
+
 ## Dependencies
 
 ### Python packages
@@ -32,9 +34,7 @@ Step 1. Sign up for a twilio account using this [link](https://www.twilio.com/tr
 Step 2. Head over to **Programmable Messaging > Try it Out > Try Whatsapp** on Twilio. Save your twilio WhatsApp sandbox contact number(number that you see on **Try WhatsApp** window) on phone and send join code *(In my case, it is **join sheet-uncle**)* as a WhatsApp message to your number. You have now setup a WhatsApp sandbox. 
 </br>
 ![](./screenshots/twilio_whatsapp_sandbox.png)</br>
-Step 3. Head over to Console Dashboard on Twilio. Copy **ACCOUNT SID** and **AUTH TOKEN** and paste it in the [twilio] section of the [config](config.ini) file. Also, update the [config](config.ini) file with your twilio WhatsApp sandbox contact number (same contact number that is saved on your phone).
-
-### **Run it**
+Step 3. Head over to Console Dashboard on Twilio. Copy **ACCOUNT SID** and **AUTH TOKEN** and paste it in the [twilio] section of the [config](config.ini) file. Also, update the [config](config.ini) file with your twilio WhatsApp sandbox contact number (same contact number that is saved on your phone). </br></br>
 
 ### Running the project locally </br>
 Step 1. Install the packages mentioned in requirements.txt file with *pip* </br>
@@ -66,5 +66,11 @@ Program will now remain active at all times in Heroku Dyno. You should be receiv
 
 You will be notified when vaccination slot is available in your area. Booking the slot and taking a jab is on you!
 
+
+```
+By using any part of this project, you agree that you will use the project judiciously.
+
+CAUTION - Do not overload the server by keeping shorter time window in scheduler. Owner/Maintainer is not liable for any damage caused.
+```
 ## License
 The source code used to format and display the content of this project is licensed under the [MIT license](https://opensource.org/licenses/mit-license.php).
