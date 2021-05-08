@@ -1,12 +1,11 @@
 # Vaccination Slot Availability Notification Service
 
 ## Overview of this project
+![](./screenshots/banner.png) </br>
 India has been facing multiple challanges amid second wave of COVID-19. This project is intended to help fellow citizens of India on finding a vaccination slot at the earliest.
 
 If you are from India and struggling to find a vaccination slot, worry not and use this project to your benefit. WhatsApp is in our daily life. So why not use it for our benefit in finding a vaccination slot? Follow along and setup a WhatsApp notification service to get notified on the vaccination slot availability in your area at the earliest.
 </br></br>
-
-![](./screenshots/banner.png)
 
 ## Dependencies
 
