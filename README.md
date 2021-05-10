@@ -76,5 +76,8 @@ By using any part of this project, you agree that you will use the project judic
 
 CAUTION - Do not overload the server by keeping shorter time window in scheduler. Owner/Maintainer is not liable for any damage caused.
 ```
+
+**UPDATE - The availability data fetched by making calls to CoWIN public API may be cached and delayed by upto 30 minutes as per the latest update from the Government of India. This was done as means of fair usage.**
+
 ## License
 The source code used to format and display the content of this project is licensed under the [MIT license](https://opensource.org/licenses/mit-license.php).
