@@ -30,7 +30,7 @@ Step 3. Head over to [config](config.ini) file and update **district_id** and **
 ### WhatsApp notification service setup
 Step 1. Sign up for a twilio account using this [link](https://www.twilio.com/try-twilio?promo=3HiRr6)
 
-Step 2. Head over to **Programmable Messaging > Try it Out > Try Whatsapp** on Twilio. Save your twilio WhatsApp sandbox contact number(number that you see on **Try WhatsApp** window) on phone and send join code *(In my case, it is **join sheet-uncle**)* as a WhatsApp message to your number. You have now setup a WhatsApp sandbox. 
+Step 2. Head over to **Programmable Messaging > Try it Out > Try Whatsapp** on Twilio. Save your twilio WhatsApp sandbox contact number(number that you see on **Try WhatsApp** window) on phone and send join code *(In my case, it is **join sheet-uncle**)* as a WhatsApp message to your number. You have now setup a WhatsApp sandbox. Please note that the sandbox expires every 3 days. You will have to reconnect to the sandbox every 3 days by sending the same code as WhatsApp message.
 
 ![](./screenshots/twilio_whatsapp_sandbox.png)
 
