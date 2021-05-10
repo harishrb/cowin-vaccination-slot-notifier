@@ -147,7 +147,7 @@ def main(cowin_args, twilio_args):
 if __name__=='__main__':
     send_whatsapp_message(twilio_args, 'You have been subscribed to vaccination slot availability notification service. You will receive a notification when a slot opens up in a center near you. Reply stop if you want to stop this notification service.')
     main(cowin_args, twilio_args)
-    schedule.every(30).minutes.do(main, cowin_args, twilio_args)
+    schedule.every(15).minutes.do(main, cowin_args, twilio_args)
     while 1:
         schedule.run_pending()
         time.sleep(1)
