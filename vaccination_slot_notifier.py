@@ -5,6 +5,9 @@ import schedule
 import datetime
 from twilio.rest import Client
 from configparser import ConfigParser
+from cowin_api import CoWinAPI
+
+cowin = CoWinAPI()
 
 
 base_path = os.path.dirname(os.path.abspath(__file__))
@@ -18,19 +21,17 @@ account_sid = str(twilio_args['account_sid'])
 auth_token = str(twilio_args['auth_token'])
 client = Client(account_sid, auth_token)
 
-message_text_primary = '*Vaccination slot availability notification*\n\n\n'
+message_text = '*Vaccination slot availability notification*\n\n\n'
 send_message_flag = False
 
 def get_slot_availability(cowin_args):
     """
     This function makes API calls to coWIN and knits a text message when vaccination slots are available
     ...
-
     Parameters
     ----------
     cowin_args : list
         a list of arguments containing configurations set by user in the [cowin] section of config file
-
     Returns
     -------
     tuple
@@ -42,17 +43,21 @@ def get_slot_availability(cowin_args):
     district_id = cowin_args['district_id']
     beneficiary_age = int(cowin_args['beneficiary_age'])
 
+    
+
     global send_message_flag
-    global message_text_primary
+    global message_text
 
     curr_date = datetime.datetime.today()
-    date_list = [curr_date + datetime.timedelta(days=x) for x in range(5)]
+    date_list = [curr_date + datetime.timedelta(days=x) for x in range(30)]
     date_str_list = [x.strftime("%d-%m-%Y") for x in date_list]
-    for date in date_str_list:
-        URL = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id={}&date={}".format(district_id, date)
-        response = requests.get(URL)
-        if response.ok:
-            available_centers = response.json()
+    try:
+        for date in date_str_list:
+            # URL = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=294&date=10-05-2021".format(district_id, date)
+            # response = requests.get(URL)
+            # if response.ok:
+                # available_centers = response.json()
+            available_centers = cowin.get_availability_by_district(district_id, date)
             num_centers = len(available_centers['centers'][0:])  
             for itr in range(0, num_centers):
                 name = available_centers['centers'][itr]['name']
@@ -66,28 +71,28 @@ def get_slot_availability(cowin_args):
                     vaccine = session['vaccine']
                     slots = str(session['slots'])
                     if available_capacity > 0 and beneficiary_age >= min_age_limit:
-                        center_info = 'Vaccination slot available in *{}*\n\nAddress: {}\n\nDate: {}\n\nAvailable capacity: {}\n\nVaccine: {}\n\nSlots: {}'.format(name, address, date, str(available_capacity), vaccine, slots)
-                        message_text_primary = message_text_primary + '\n\n\n\n' + center_info
+                        print('[INFO] Vaccination slot available on {}'.format(date))
+                        center_info = 'Center: *{}*\n\nDate: {}\n\nAvailable capacity: {}\n\nVaccine: {}'.format(name, date, str(available_capacity), vaccine)
+                        message_text = message_text + '\n\n\n\n' + center_info
                         send_message_flag = True
-    else:
-        print('[INFO] No vaccination slot found')
-        send_message_flag = False
+    except Exception as e:
+        print('[EXCEPTION] {}'.format(e))
+    message_text = message_text + '\n\n\n' + 'Book your slot - https://selfregistration.cowin.gov.in/'
+    
 
-    return send_message_flag, message_text_primary
+    return send_message_flag, message_text
 
 
 def send_whatsapp_message(twilio_args, message_text):
     """
     This function sends WhatsApp message to the user
     ...
-
     Parameters
     ----------
     twilio_args : list
         a list of arguments containing configurations set by user in the [twilio] section of config file
     message_text : str
         a string of text message
-
     Returns
     -------
     None
@@ -105,12 +110,10 @@ def main(cowin_args, twilio_args):
     """
     Main function that gets called at schedule set by the user 
     ...
-
     Internal function calls
     -----------------------
     get_slot_availability : finds available vaccination slots and knits a text message
     send_whatsapp_message : sends WhatsApp message to the user
-
     Parameters
     ----------
     cowin_args : list
@@ -145,10 +148,10 @@ def main(cowin_args, twilio_args):
     
 
 if __name__=='__main__':
-    send_whatsapp_message(twilio_args, 'You have been subscribed to vaccination slot availability notification service. You will receive a notification when a slot opens up in a center near you. Reply stop if you want to stop this notification service.')
+    district = cowin_args['district_name']
+    send_whatsapp_message(twilio_args, 'You have been subscribed to vaccination slot availability notification service. You will receive a notification when a slot opens up in {}. Reply stop if you want to stop this notification service.'.format(district))
     main(cowin_args, twilio_args)
-    schedule.every(15).minutes.do(main, cowin_args, twilio_args)
+    schedule.every(5).minutes.do(main, cowin_args, twilio_args)
     while 1:
         schedule.run_pending()
         time.sleep(1)
-    
